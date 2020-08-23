@@ -1,0 +1,77 @@
+server:
+  port: 20005
+  servlet:
+    context-path: /
+  compression:
+    enabled: true
+    mime-types: application/javascript,text/css,application/json,application/xml,text/html,text/xml,text/plain
+spring:
+  application:
+    name: novel-backenserver
+  profiles:
+    active: dev
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/novel?serverTimezone=GMT%2B8&useUnicode=true&useSSL=false&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&
+    username: root
+    password: root
+    druid:
+      initial-size: 5
+      max-active: 30
+      min-idle: 5
+      max-wait: 60000
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      filters: stat,wall
+      filter:
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 120000
+      validation-query: SELECT 1
+      validation-query-timeout: 60000
+      connection-init-sqls: ["SET names 'utf8mb4';"]
+  jpa:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        format_sql: true
+        enable_lazy_load_no_trans: true
+    show-sql: true
+    open-in-view: true
+#  由WebMvcConfiguration配置
+#  jackson:
+#    date-format: java.text.SimpleDateFormat
+#    serialization:
+#      indent_output: true
+#      fail_on_empty_beans: false
+#    defaultPropertyInclusion: NON_NULL
+#    deserialization:
+#      fail_on_unknown_properties: false
+#    parser:
+#      allow_unquoted_control_chars: true
+#      allow_single_quotes: true
+#    time-zone: GMT+8
+  redis:
+    cluster:
+      nodes: 127.0.0.1:7000,127.0.0.1:7001,127.0.0.1:7002
+    password: root
+    jedis:
+      pool:
+        min-idle: 100
+        max-idle: 300
+        max-wait: 10000ms
+        max-active: 1000
+    timeout: 5000ms
+logging:
+  level:
+    org.hibernate.type.descriptor.sql.BasicBinder: info
+custom:
+  google:
+    enable: false
+    host: https://www.recaptcha.net
+    path: /recaptcha/api/siteverify
+    secret: 6Ldm0-4UAAAAABb1d59UVEv3p3aIu1nTGxEeVc_t
